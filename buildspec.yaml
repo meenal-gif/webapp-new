@@ -21,7 +21,7 @@ build:
 post_build:
     commands:
       - echo Updating kubernetes deployment...
-      - aws eks update-kubeconfig --region $AWS_REGION --name $CLUSTER_NAME
+      - aws eks update-kubeconfig --region ap-south-1 --name $CLUSTER_NAME
       - kubectl ge ns webapp || kubectl create namespace webapp
       - kubectl apply -f k8-aws.yaml
       - kubectl get pods -n webapp
