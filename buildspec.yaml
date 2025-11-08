@@ -5,7 +5,16 @@ env:
     ECR_REPO: 595960695514.dkr.ecr.ap-south-1.amazonaws.com
 
 phases:
-  pre_build:
+  # Install kubectl
+      - curl -o /usr/local/bin/kubectl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+      - chmod +x /usr/local/bin/kubectl
+      - kubectl version --client
+      - echo "Installing eksctl..."
+      - curl -sLO "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz"
+      - tar xz -C /usr/local/bin -f eksctl_$(uname -s)_amd64.tar.gz
+      - eksctl version
+
+pre_build:
     commands:
     - echo logging in to Amazon ECR...
     - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ECR_REPO
